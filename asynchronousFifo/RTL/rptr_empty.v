@@ -26,14 +26,14 @@ always @(posedge rclk or negedge rrst_n)begin
 		{rbin, rptr} <= {rbinnext, rgraynext};
 end
 // Memory read-address pointer (okay to use binary to address memory)
-assign raddr = rbin[ADDRSIZE-1:0];          // 计算出二进制计数值对应的地址
-assign rbinnext = rbin + (rinc & ~rempty);  // 不空就让二进制计数器加一，否则不变
-assign rgraynext = (rbinnext>>1) ^ rbinnext;// 计算出二进制计数值对应的格雷码计数值
+assign raddr = rbin[ADDRSIZE-1:0];          
+assign rbinnext = rbin + (rinc & ~rempty); 
+assign rgraynext = (rbinnext>>1) ^ rbinnext;
 
 //---------------------------------------------------------------
 // FIFO empty when the next rptr == synchronized wptr or on reset
 //---------------------------------------------------------------
-assign rempty_val = (rgraynext == rq2_wptr);// 生成 empty 信号
+assign rempty_val = (rgraynext == rq2_wptr);
 
 always @(posedge rclk or negedge rrst_n)begin
     if (!rrst_n) 

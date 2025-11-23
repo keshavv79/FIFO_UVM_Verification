@@ -1,24 +1,4 @@
 `timescale 1ns / 1ps
-//////////////////////////////////////////////////////////////////////////////////
-// Company: 
-// Engineer: 
-// 
-// Create Date: 2022/07/19 10:54:38
-// Design Name: 
-// Module Name: rptr_empty
-// Project Name: 
-// Target Devices: 
-// Tool Versions: 
-// Description: 
-// 
-// Dependencies: 
-// 
-// Revision:
-// Revision 0.01 - File Created
-// Additional Comments:
-// 
-//////////////////////////////////////////////////////////////////////////////////
-
 
 module rptr_empty 
 #(parameter ADDRSIZE = 4)
@@ -38,7 +18,7 @@ wire [ADDRSIZE:0]       rbinnext;
 
 //-------------------
 // GRAYSTYLE2 pointer
-//-------------------// Í¨¹ıÒ»¼¶¼Ä´æÆ÷Êä³ö
+//-------------------// é€šè¿‡ä¸€çº§å¯„å­˜å™¨è¾“å‡º
 always @(posedge rclk or negedge rrst_n)begin
     if (!rrst_n) 
 		{rbin, rptr} <= 0;
@@ -46,14 +26,14 @@ always @(posedge rclk or negedge rrst_n)begin
 		{rbin, rptr} <= {rbinnext, rgraynext};
 end
 // Memory read-address pointer (okay to use binary to address memory)
-assign raddr = rbin[ADDRSIZE-1:0];          // ¼ÆËã³ö¶ş½øÖÆ¼ÆÊıÖµ¶ÔÓ¦µÄµØÖ·
-assign rbinnext = rbin + (rinc & ~rempty);  // ²»¿Õ¾ÍÈÃ¶ş½øÖÆ¼ÆÊıÆ÷¼ÓÒ»£¬·ñÔò²»±ä
-assign rgraynext = (rbinnext>>1) ^ rbinnext;// ¼ÆËã³ö¶ş½øÖÆ¼ÆÊıÖµ¶ÔÓ¦µÄ¸ñÀ×Âë¼ÆÊıÖµ
+assign raddr = rbin[ADDRSIZE-1:0];          // è®¡ç®—å‡ºäºŒè¿›åˆ¶è®¡æ•°å€¼å¯¹åº”çš„åœ°å€
+assign rbinnext = rbin + (rinc & ~rempty);  // ä¸ç©ºå°±è®©äºŒè¿›åˆ¶è®¡æ•°å™¨åŠ ä¸€ï¼Œå¦åˆ™ä¸å˜
+assign rgraynext = (rbinnext>>1) ^ rbinnext;// è®¡ç®—å‡ºäºŒè¿›åˆ¶è®¡æ•°å€¼å¯¹åº”çš„æ ¼é›·ç è®¡æ•°å€¼
 
 //---------------------------------------------------------------
 // FIFO empty when the next rptr == synchronized wptr or on reset
 //---------------------------------------------------------------
-assign rempty_val = (rgraynext == rq2_wptr);// Éú³É empty ĞÅºÅ
+assign rempty_val = (rgraynext == rq2_wptr);// ç”Ÿæˆ empty ä¿¡å·
 
 always @(posedge rclk or negedge rrst_n)begin
     if (!rrst_n) 
